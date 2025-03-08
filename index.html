@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Clone</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f9f9f9; }
+        .container { width: 60%; margin: auto; padding: 20px; }
+        .video-section { text-align: center; }
+        video { width: 100%; max-height: 500px; border-radius: 10px; }
+        .comments-section { margin-top: 20px; }
+        textarea { width: 100%; height: 80px; margin-top: 10px; border-radius: 5px; padding: 5px; }
+        button { margin-top: 10px; padding: 10px 15px; border: none; background: red; color: white; cursor: pointer; }
+        .comment { background: white; padding: 10px; margin-top: 5px; border-radius: 5px; box-shadow: 0px 0px 5px #ccc; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="video-section">
+            <h2>YouTube Clone - Video</h2>
+            <video controls>
+                <source src="" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        
+        <div class="comments-section">
+            <h3>Comments</h3>
+            <textarea id="commentInput" placeholder="Write a comment..."></textarea>
+            <button onclick="submitComment()">Post Comment</button>
+            <div id="comments"></div>
+        </div>
+    </div>
+
+    <script>
+        async function submitComment() {
+            let comment = document.getElementById("commentInput").value;
+            if (!comment) return;
+            
+            let response = await fetch("http://127.0.0.1:5000/predict", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ comment: comment })
+            });
+
+            let result = await response.json();
+
+            if (!result.toxic) {
+                let commentDiv = document.createElement("div");
+                commentDiv.className = "comment";
+                commentDiv.innerText = comment;
+                document.getElementById("comments").appendChild(commentDiv);
+                document.getElementById("commentInput").value = "";
+            } else {
+                alert("Your comment was flagged as toxic and cannot be posted.");
+            }
+        }
+    </script>
+</body>
+</html>
