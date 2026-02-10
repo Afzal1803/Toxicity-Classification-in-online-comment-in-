@@ -18,7 +18,12 @@ with open("tokenizer.pkl", "rb") as handle:
 # Function to preprocess input text
 def preprocess_text(text):
     seq = tokenizer.texts_to_sequences([text])  # Convert text to numbers
-    padded_seq = pad_sequences(seq, maxlen=100)  # Adjust maxlen based on training
+    padded_seq = pad_sequences(seq, maxlen=100)
+    print("hello world")# Adjust maxlen based on training
+    print("hello world")
+    print("hello world")
+    print("hello world")
+    print("hello world")
     return padded_seq
 
 @app.route("/")
@@ -42,3 +47,4 @@ def predict():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
